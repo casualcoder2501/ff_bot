@@ -7,7 +7,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 Func playerxpos()                                                                  ; Player Y pos
-	
+
 	$STATICOFFSET = Dec("00D0A36C")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -23,7 +23,7 @@ Func playerxpos()                                                               
 EndFunc
 
 Func playerzpos()                                                                  ; Player Y pos
-	
+
 	$STATICOFFSET = Dec("00D0A36C")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -39,7 +39,7 @@ Func playerzpos()                                                               
 EndFunc
 
 Func playerypos()                                                                  ; Player Y pos
-	OPENAIONMEMORY()
+
 	$STATICOFFSET = Dec("00D0A36C")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -57,7 +57,7 @@ EndFunc
  ; Angel of the Player 360° / 2 :)   ....  0 - 180   and -180 - 0
 Func playerrotation()
 ;~ 	Return MEMREADDLL($playerrotation, "float")
-	OPENAIONMEMORY()
+
 	$STATICOFFSET = Dec("00D09274")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -100,7 +100,7 @@ EndIf
 EndFunc
 
 Func playermaxhp()
-	OPENAIONMEMORY()
+
 	$STATICOFFSET = Dec("00D0BCE8")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -112,7 +112,6 @@ Func playermaxhp()
 	Return $MEMTEST
 EndFunc
 Func playerCurrectHp()
-	OPENAIONMEMORY()
 	$STATICOFFSET = Dec("00D0BCE8")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -137,7 +136,6 @@ Func playerCurrectHpPercent()
 EndFunc
 
 Func playerCurrectMana()
-	OPENAIONMEMORY()
 	$STATICOFFSET = Dec("00D0BCE8")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -150,7 +148,7 @@ Func playerCurrectMana()
 EndFunc
 
 func playerMaxMana()
-	OPENAIONMEMORY()
+
 	$STATICOFFSET = Dec("00D0BCE8")
 	Global $PID
 	Global $CUROFFSET[1]
@@ -437,22 +435,22 @@ func getangle($diffx, $diffy)
 	$GRAD = atan( $Steigung ) * $RADZUGRAD
     $GRAD = 90  - $GRAD
 
-if      $diffy > 0 and $diffx > 0 Then    ;   
+if      $diffy > 0 and $diffx > 0 Then    ;
 		$GRAD = 180 -  $GRAD
 ;~ 		MsgBox( 0 , "after1" ,  $GRAD  )
 		Return $GRAD
 
-ElseIf  $diffy < 0 and $diffx < 0 Then    ; 
+ElseIf  $diffy < 0 and $diffx < 0 Then    ;
 		$grad =   270 + $GRAD
 ;~ 		MsgBox( 0 , "after2" ,  $GRAD  )
 		Return   $GRAD
 
-ElseIf  $diffy > 0 and $diffx < 0 Then    ;  
+ElseIf  $diffy > 0 and $diffx < 0 Then    ;
 		$grad = ( 180 - $GRAD ) + 180
 ;~ 		MsgBox( 0 , "after3" ,  $GRAD  )
 		Return $GRAD
 
-ElseIf  $diffy < 0 and $diffx > 0 Then    ;  
+ElseIf  $diffy < 0 and $diffx > 0 Then    ;
 		$grad =  (180 - $GRAD )
 ;~ 		MsgBox( 0 , "after4" ,  $GRAD  )
 		Return $GRAD
@@ -557,4 +555,5 @@ EndIf
 endfunc
 
 
-ConsoleWrite(playerxpos())
+;~ ConsoleWrite(ProcessGetId("FINAL FANTASY XIV"))
+ConsoleWrite(ProcessGetName(8780))
