@@ -40,20 +40,50 @@ Func findFish()
     if $search[0] = 1 then
         ControlSend($hWnd, "", "", "{3}")
         Sleep(15000)
-        ControlSend($hWnd, "", "", "{2}")
+        $fishFail = 0
         return True
     Else
-        Sleep(500)
         return False
 
     EndIf
 EndFunc
 
+Global $fishingCount = 0
+Global $fishFail = 0
+
 While True
     ControlSend($hWnd, "", "", "{2}")
-    While not findFish()
-    findFish()
-    WEnd
     
+    if $fishingCount = 20 Then
+      
+        ControlSend($hWnd, "", "", "{w down}")
+        Sleep(2000)
+        ControlSend($hWnd, "", "", "{w up}")
+        Sleep(500)
+        ControlSend($hWnd, "", "", "{2}")
+        
+    elseif $fishingCount = 50 Then
+        ControlSend($hWnd, "", "", "{w down}")
+        Sleep(8000)
+        ControlSend($hWnd, "", "", "{w up}")
+        Sleep(500)
+        ControlSend($hWnd, "", "", "{2}")
+        $fishingCount = 0
+    EndIf
+    While not findFish()
+        if $fishFail > 80 Then
+            $fishFail = 0
+            ControlSend($hWnd, "", "", "{w down}")
+            Sleep(2000)
+            ControlSend($hWnd, "", "", "{w up}")
+            ExitLoop
+        EndIf
+        
+        $fishFail +=1
+        findFish()
+        Sleep(500)
+    WEnd
+    $fishingCount +=1
+    ConsoleWrite("THIS IS THE FISHING COUNT>>>>>>>>>>: `" & $fishingCount)
 WEnd
     
