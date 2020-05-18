@@ -15,7 +15,7 @@ HotKeySet("Esc", "_Exit")
 ;~ Global $optimal = 15
 
 global $xPos = 0
-global $yPos = 190
+global $yPos = 100
 global $xPos2 = 950
 global $yPos2 = 550
 
@@ -34,17 +34,17 @@ EndFunc
 
 HotKeySet("{ESC}", "_Exit")
 
+
 Func findEnemy()
     $search = _ImageSearch_Area($image1, $xPos, $yPos, $xPos2, $yPos2,110 )
     if $search[0] = 1 then
-        $foundX = $search[1]
-        $foundY = $search[2]
-        MouseMove($search[1] +60 ,$search[2]  , 1)
+ 
+        MouseMove($search[1] +60 ,$search[2] +2 , 1)
         sleep(1000)
-        MouseClick("left",$search[1] +60,$search[2] )
-        Sleep(200)
-        MouseClick("right",$search[1] +60 ,$search[2] )
-        sleep(800)
+        MouseClick("left",$search[1] +60,$search[2] +2, 1, 1)
+        Sleep(400)
+        MouseClick("right",$search[1] +60 ,$search[2] +2, 1, 1)
+        sleep(400)
        
                 ;~ MouseClick("right",$search[1] +35,$search[2] )
 
@@ -71,11 +71,11 @@ Func findAggro()
     $aggro =  FFBestSpot($searchArea, $minAcceptable, $optimal, $x, $y, $color, $tolerance)
     if not @error Then
         MouseMove($aggro[0] + 60, $aggro[1] +10 , 1)
-        Sleep(600)
-        MouseClick("left",$aggro[0] + 60, $aggro[1] +10)
-        Sleep(200)
-        MouseClick("right",$aggro[0] + 60, $aggro[1] +10)
-        Sleep(800)
+        Sleep(1000)
+        MouseClick("left",$aggro[0] + 60, $aggro[1] +10,1,1)
+        Sleep(400)
+        MouseClick("right",$aggro[0] + 60, $aggro[1] +10,1,1)
+        Sleep(400)
         ;~ Sleep(1000)
         ;~ MouseClick("right",$aggro[0] + 35, $aggro[1] )
         ;~ Sleep(500)
@@ -108,7 +108,7 @@ Func selectTarget()
     else
         ConsoleWrite("couldn't select a target")
         MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +15, $adjust_y)
-        movePlayer(1000)
+        movePlayer(500)
         Sleep(500)
         return false
     EndIf
@@ -122,13 +122,20 @@ Func movePlayer($time)
     MouseUp("right")
 
 EndFunc
-Func moveBackward($time)
-    ControlSend($hWnd, "", "", "{d down}")
-    Sleep(1000)
-    ControlSend($hWnd, "", "", "{d up}")
+Func moveBackward($direction)
+    if $direction == "left" Then
+
+        ControlSend($hWnd, "", "", "{a down}")
+        Sleep(1000)
+        ControlSend($hWnd, "", "", "{a up}")
+    ElseIf $direction == "right" Then
+        ControlSend($hWnd, "", "", "{d down}")
+        Sleep(1000)
+        ControlSend($hWnd, "", "", "{d up}")
+    EndIf
     Sleep(400)
     ControlSend($hWnd, "", "", "{s down}")
-    Sleep(1000)
+    Sleep(2000)
     ControlSend($hWnd, "", "", "{s up}")
     ;~ ControlSend($hWnd, "", "", "{w down}")
     ;~ Sleep($time)
@@ -144,24 +151,32 @@ Func attack()
     Sleep(2600)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
+    moveBackward("left")
+    Sleep(1000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(2600)
     ControlSend($hWnd, "", "", "{4}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{8}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{7}")
     Sleep(2600)
-    moveBackward(1000)
+    moveBackward("right")
+    Sleep(1000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{3}")
+    Sleep(2600)
+    moveBackward("left")
     Sleep(1000)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
     Sleep(2600)
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{3}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(4200)
+    ControlSend($hWnd, "", "", "{6}")
+    Sleep(6200)
 
 
 EndFunc
@@ -185,14 +200,6 @@ Func heal()
 EndFunc
 
 While true
-    $healCounter = 0
-    ;~ callPet()
-    if $healCounter = 2 then
-        heal()
-        $healCounter = 0
-    Else
-        $healCounter +=1
-    EndIf
     While not selectTarget()
         selectTarget()
     WEnd
