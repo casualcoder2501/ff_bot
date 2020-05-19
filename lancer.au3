@@ -135,7 +135,7 @@ Func moveBackward($direction)
     EndIf
     Sleep(400)
     ControlSend($hWnd, "", "", "{s down}")
-    Sleep(2000)
+    Sleep(1000)
     ControlSend($hWnd, "", "", "{s up}")
     ;~ ControlSend($hWnd, "", "", "{w down}")
     ;~ Sleep($time)
@@ -146,31 +146,39 @@ Func attack()
     ;~ ControlSend($hWnd, "", "", "{F11}")
     ;~ ControlSend($hWnd, "", "", "{8}")
     ControlSend($hWnd, "", "", "{1}")
-    Sleep(1500)
-    ControlSend($hWnd, "", "", "{5}")
-    Sleep(2600)
+   
+    Sleep(2500)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
     moveBackward("left")
     Sleep(1000)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{4}")
-    Sleep(2600)
     ControlSend($hWnd, "", "", "{8}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{7}")
-    Sleep(2600)
-    moveBackward("right")
-    Sleep(1000)
-    ControlSend($hWnd, "", "", "{1}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
     Sleep(2600)
+    ControlSend($hWnd, "", "", "{7}")
+    Sleep(2600)
+    moveBackward("right")
+    Sleep(1000)
+   
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{4}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{3}")
+    Sleep(2600)
     moveBackward("left")
     Sleep(1000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(2600)
+    ControlSend($hWnd, "", "", "{8}")
+    Sleep(2600)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
@@ -182,25 +190,30 @@ Func attack()
 EndFunc
 
 Func heal()
-    $inj_searchArea = 100
-    $inj_minAcceptable = 150
-    $inj_optimal = 200
-    $inj_x = 485
-    $inj_y = 690
-    $inj_color = 0x9ED545a
+    $inj_searchArea = 15
+    $inj_minAcceptable = 10
+    $inj_optimal = 50
+    $inj_x = 491
+    $inj_y = 691
+    $inj_color = 0x9ED545
     ;~ light green hp:9ED545 medium green hp: 6D8B33 dark green hp: 3B5D1C
-    $inj_tolerance = 10
+    $inj_tolerance = 5
     $injured =  FFBestSpot($inj_searchArea, $inj_minAcceptable, $inj_optimal, $inj_x, $inj_y, $inj_color, $inj_tolerance)
     if not @error Then
+        ConsoleWrite("<<<<not injured>>>>>")
         return false
+        
     Else
-        ControlSend($hWnd, "", "", "{6}")
-        Sleep(2700)
+        ConsoleWrite("<<<<<injured>>>>")
+        ;~ ControlSend($hWnd, "", "", "{5}")
+        ;~ Sleep(2700)
+        return true
     EndIf
 EndFunc
 
 While true
     While not selectTarget()
-        selectTarget()
+       
     WEnd
+   
 WEnd  
