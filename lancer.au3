@@ -17,14 +17,22 @@ HotKeySet("Esc", "_Exit")
 global $xPos = 0
 global $yPos = 100
 global $xPos2 = 950
-global $yPos2 = 550
+global $yPos2 = 560
+
+global $hp_xPos = 471
+global $hp_yPos = 681
+global $hp_xPos2 = 512
+global $hp_yPos2 = 695
 
 global $petCounter = 0
 
 global $foundX = 0
 global $foundY = 0
 global $image1 = @ScriptDir & "\ff_no_white.bmp"
-global $image2 = @ScriptDir & "\ff_enemy.bmp"
+global $image2 = @ScriptDir & "\ff_enemy_whole.bmp"
+global $image3 = @ScriptDir & "\aggro.bmp"
+global $image4 = @ScriptDir & "\hp_bar.bmp"
+
 
 ;~ , $xPos2, $yPos2
 
@@ -36,7 +44,7 @@ HotKeySet("{ESC}", "_Exit")
 
 
 Func findEnemy()
-    $search = _ImageSearch_Area($image1, $xPos, $yPos, $xPos2, $yPos2,110 )
+    $search = _ImageSearch_Area($image1 & "|" & $image2, $xPos, $yPos, $xPos2, $yPos2,110 )
     if $search[0] = 1 then
  
         MouseMove($search[1] +60 ,$search[2] +2 , 1)
@@ -53,6 +61,14 @@ Func findEnemy()
         ;~ Sleep(500)
         ;~ MsgBox(0,"found!", "X position: --> " & $search[1] & "Y position: --> " & $search[2])
         return true
+    ;~ if $hostileSearch[0]= 1 Then
+    ;~     MouseMove($hostileSearch[1] +60 ,$hostileSearch[2] +2 , 1)
+    ;~     sleep(1000)
+    ;~     MouseClick("left",$hostileSearch[1] +60,$hostileSearch[2] +2, 1, 1)
+    ;~     Sleep(400)
+    ;~     MouseClick("right",$hostileSearch[1] +60 ,$hostileSearch[2] +2, 1, 1)
+    ;~     sleep(400)
+    ;~ Endif
     Else
         ConsoleWrite("Could not find a non aggressive enemy")
         return false
@@ -60,26 +76,36 @@ Func findEnemy()
 EndFunc
 
 Func findAggro()
-    $searchArea = 300
-    $minAcceptable = 250
-    $optimal = 320
-    $x = 525
-    $y = 330
-    $color = 0xFFBDBF
-    $tolerance = 0
-    FFSetWnd($hWnd)
-    $aggro =  FFBestSpot($searchArea, $minAcceptable, $optimal, $x, $y, $color, $tolerance)
-    if not @error Then
-        MouseMove($aggro[0] + 60, $aggro[1] +10 , 1)
-        Sleep(1000)
-        MouseClick("left",$aggro[0] + 60, $aggro[1] +10,1,1)
+    $search_aggro = _ImageSearch_Area($image3, $xPos, $yPos, $xPos2, $yPos2,110 )
+    if $search_aggro[0] = 1 then
+ 
+        MouseMove($search_aggro[1] +60 ,$search_aggro[2] +2 , 1)
+        sleep(1000)
+        MouseClick("left",$search_aggro[1] +60,$search_aggro[2] +2, 1, 1)
         Sleep(400)
-        MouseClick("right",$aggro[0] + 60, $aggro[1] +10,1,1)
-        Sleep(400)
-        ;~ Sleep(1000)
-        ;~ MouseClick("right",$aggro[0] + 35, $aggro[1] )
-        ;~ Sleep(500)
+        MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +2, 1, 1)
+        sleep(400)
         return true
+    ;~ $searchArea = 300
+    ;~ $minAcceptable = 250
+    ;~ $optimal = 320
+    ;~ $x = 525
+    ;~ $y = 330
+    ;~ $color = 0xFFBDBF
+    ;~ $tolerance = 0
+    ;~ FFSetWnd($hWnd)
+    ;~ $aggro =  FFBestSpot($searchArea, $minAcceptable, $optimal, $x, $y, $color, $tolerance)
+    ;~ if not @error Then
+    ;~     MouseMove($aggro[0] + 60, $aggro[1] +10 , 1)
+    ;~     Sleep(1000)
+    ;~     MouseClick("left",$aggro[0] + 60, $aggro[1] +10,1,1)
+    ;~     Sleep(400)
+    ;~     MouseClick("right",$aggro[0] + 60, $aggro[1] +10,1,1)
+    ;~     Sleep(400)
+    ;~     ;~ Sleep(1000)
+    ;~     ;~ MouseClick("right",$aggro[0] + 35, $aggro[1] )
+    ;~     ;~ Sleep(500)
+    ;~     return true
     Else
         ConsoleWrite("could not find Aggressive Monster")
         return false
@@ -92,9 +118,9 @@ Func selectTarget()
     if findAggro() Then
         movePlayer(1500)
         Sleep(800)
-        ;~ petAttack()
+     
         attack()
-        
+        ;~ petAttack()
         ;~ heal()
         return true
     elseif findEnemy() Then
@@ -102,6 +128,7 @@ Func selectTarget()
         Sleep(800)
         ;~ petAttack()
         attack()
+    
        
         ;~ heal()
         return true    
@@ -156,6 +183,7 @@ Func attack()
     Sleep(2600)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
+    needsHeal()
     ControlSend($hWnd, "", "", "{3}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{7}")
@@ -167,6 +195,7 @@ Func attack()
     Sleep(2600)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
+    needsHeal()
     ControlSend($hWnd, "", "", "{4}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
@@ -179,6 +208,7 @@ Func attack()
     Sleep(2600)
     ControlSend($hWnd, "", "", "{8}")
     Sleep(2600)
+    needsHeal()
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
@@ -189,31 +219,35 @@ Func attack()
 
 EndFunc
 
-Func heal()
-    $inj_searchArea = 15
-    $inj_minAcceptable = 10
-    $inj_optimal = 50
-    $inj_x = 491
-    $inj_y = 691
-    $inj_color = 0x9ED545
-    ;~ light green hp:9ED545 medium green hp: 6D8B33 dark green hp: 3B5D1C
-    $inj_tolerance = 5
-    $injured =  FFBestSpot($inj_searchArea, $inj_minAcceptable, $inj_optimal, $inj_x, $inj_y, $inj_color, $inj_tolerance)
-    if not @error Then
-        ConsoleWrite("<<<<not injured>>>>>")
-        return false
+Func needsHeal()
+    ;~ $inj_searchArea = 15
+    ;~ $inj_minAcceptable = 10
+    ;~ $inj_optimal = 50
+    ;~ $inj_x = 491
+    ;~ $inj_y = 691
+    ;~ $inj_color = 0x9ED545
+    ;~ ;~ light green hp:9ED545 medium green hp: 6D8B33 dark green hp: 3B5D1C
+    ;~ $inj_tolerance = 5
+    ;~ $injured =  FFBestSpot($inj_searchArea, $inj_minAcceptable, $inj_optimal, $inj_x, $inj_y, $inj_color, $inj_tolerance)
+    
+    $search_hp = _ImageSearch_Area($image4, $hp_xPos, $hp_yPos, $hp_xPos2, $hp_yPos2,20 )
+
+    if $search_hp[0] = 1 Then
+        ConsoleWrite("<<<<injured>>>>>")
+        ControlSend($hWnd, "", "", "{5}")
+        Sleep(2600)
+        return true
         
     Else
-        ConsoleWrite("<<<<<injured>>>>")
+        ConsoleWrite("<<<<<not injured>>>>")
         ;~ ControlSend($hWnd, "", "", "{5}")
-        ;~ Sleep(2700)
-        return true
+        return false
     EndIf
 EndFunc
 
 While true
     While not selectTarget()
-       
+        selectTarget()
     WEnd
-   
+    
 WEnd  
