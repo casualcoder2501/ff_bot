@@ -49,41 +49,40 @@ Func findFish()
 EndFunc
 
 Global $fishingCount = 0
-Global $fishFail = 0
+Global $foodCount = 0
 
 While True
+    Sleep(4000)
+    MouseClick("left", 777, 679, 1, 5)
+    Sleep(4000)
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{6}")
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{2}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{3}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{2}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{4}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{4}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{4}")
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{1}")
+    Sleep(3000)
+    $foodCount +=1
+    ConsoleWrite($foodCount)
     
-    if $fishingCount = 20 Then
-      
-        ControlSend($hWnd, "", "", "{w down}")
-        Sleep(2000)
-        ControlSend($hWnd, "", "", "{w up}")
-        Sleep(500)
-        ControlSend($hWnd, "", "", "{2}")
-        
-    elseif $fishingCount = 50 Then
-        ControlSend($hWnd, "", "", "{w down}")
-        Sleep(8000)
-        ControlSend($hWnd, "", "", "{w up}")
-        Sleep(500)
-        ControlSend($hWnd, "", "", "{2}")
-        $fishingCount = 0
-    EndIf
-    While not findFish()
-        if $fishFail > 80 Then
-            $fishFail = 0
-            ControlSend($hWnd, "", "", "{w down}")
-            Sleep(2000)
-            ControlSend($hWnd, "", "", "{w up}")
-            ExitLoop
-        EndIf
-        
-        $fishFail +=1
-        findFish()
-        Sleep(500)
-    WEnd
-    $fishingCount +=1
-    ConsoleWrite("THIS IS THE FISHING COUNT>>>>>>>>>>: `" & $fishingCount)
+    
 WEnd
     
