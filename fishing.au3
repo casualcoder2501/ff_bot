@@ -36,7 +36,7 @@ HotKeySet("{ESC}", "_Exit")
 
 
 Func findFish()
-    $search = _ImageSearch_Area($image1, $xPos, $yPos, $xPos2, $yPos2,110 )
+    $search = _ImageSearch_Area($image1, $xPos, $yPos, $xPos2, $yPos2,90 )
     if $search[0] = 1 then
         ControlSend($hWnd, "", "", "{3}")
         Sleep(15000)

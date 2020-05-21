@@ -47,13 +47,13 @@ Func findEnemy()
     $search = _ImageSearch_Area($image1 & "|" & $image2, $xPos, $yPos, $xPos2, $yPos2,110 )
     if $search[0] = 1 then
  
-        MouseMove($search[1] +60 ,$search[2] +2 , 1)
+        MouseMove($search[1] +60 ,$search[2]  , 1)
         sleep(1000)
-        MouseClick("left",$search[1] +60,$search[2] +2, 1, 1)
-        Sleep(700)
-        MouseClick("right",$search[1] +60 ,$search[2] +2, 1, 1)
-        sleep(800)
-       
+        MouseClick("left",$search[1] +60,$search[2], 1, 1)
+        Sleep(1000)
+        MouseClick("right",$search[1] +60,$search[2], 1, 1)
+        Sleep(1000)
+          
                 ;~ MouseClick("right",$search[1] +35,$search[2] )
 
         ;~ Sleep(1000)
@@ -84,7 +84,10 @@ Func findAggro()
         MouseClick("left",$search_aggro[1] +60,$search_aggro[2] +1, 1, 1)
         Sleep(700)
         MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +1, 1, 1)
-        sleep(800)
+        sleep(500)
+        MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +1, 1, 1)
+        sleep(500)
+
         return true
     ;~ $searchArea = 300
     ;~ $minAcceptable = 250
@@ -136,6 +139,8 @@ Func selectTarget()
         ConsoleWrite("couldn't select a target")
         Sleep(1000)
         MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +15, $adjust_y)
+        Sleep(900)
+
         movePlayer(500)
         Sleep(900)
         return false
