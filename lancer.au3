@@ -13,9 +13,9 @@ HotKeySet("Esc", "_Exit")
 ;~ Global $searchArea = 20
 ;~ Global $minAcceptable = 3
 ;~ Global $optimal = 15
-
+global $eat_food_counter = 0
 global $xPos = 0
-global $yPos = 100
+global $yPos = 50
 global $xPos2 = 950
 global $yPos2 = 560
 
@@ -47,12 +47,17 @@ Func findEnemy()
     $search = _ImageSearch_Area($image1 & "|" & $image2, $xPos, $yPos, $xPos2, $yPos2,110 )
     if $search[0] = 1 then
  
-        MouseMove($search[1] +60 ,$search[2] +2 , 1)
+        MouseMove($search[1] +60 ,$search[2] +1 , 1)
         sleep(1000)
-        MouseClick("left",$search[1] +60,$search[2] +2, 1, 1)
-        Sleep(400)
-        MouseClick("right",$search[1] +60 ,$search[2] +2, 1, 1)
+        MouseDown("left")
+        Sleep(200)
+        MouseUp("left")
         sleep(400)
+        MouseDown("right")
+        Sleep(200)
+        MouseUp("right")
+        sleep(1000)
+       
        
                 ;~ MouseClick("right",$search[1] +35,$search[2] )
 
@@ -70,7 +75,7 @@ Func findEnemy()
     ;~     sleep(400)
     ;~ Endif
     Else
-        ConsoleWrite("Could not find a non aggressive enemy")
+        ;~ ConsoleWrite("Could not find a non aggressive enemy")
         return false
     EndIf
 EndFunc
@@ -81,10 +86,14 @@ Func findAggro()
  
         MouseMove($search_aggro[1] +60 ,$search_aggro[2] +2 , 1)
         sleep(1000)
-        MouseClick("left",$search_aggro[1] +60,$search_aggro[2] +2, 1, 1)
-        Sleep(400)
-        MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +2, 1, 1)
+        MouseDown("left")
+        Sleep(200)
+        MouseUp("left")
         sleep(400)
+        MouseDown("right")
+        Sleep(200)
+        MouseUp("right")
+        sleep(800)
         return true
     ;~ $searchArea = 300
     ;~ $minAcceptable = 250
@@ -107,7 +116,7 @@ Func findAggro()
     ;~     ;~ Sleep(500)
     ;~     return true
     Else
-        ConsoleWrite("could not find Aggressive Monster")
+        ;~ ConsoleWrite("could not find Aggressive Monster")
         return false
     EndIf
     ;~ blue_face pixel: 0076EE  red_attack_pixel: FFBDBF 9F2D29 hp: 6EA52D
@@ -116,6 +125,7 @@ Func selectTarget()
     $adjust_x = 525
     $adjust_y = 330
     if findAggro() Then
+        Sleep(500)
         movePlayer(1500)
         Sleep(800)
      
@@ -124,6 +134,7 @@ Func selectTarget()
         ;~ heal()
         return true
     elseif findEnemy() Then
+        Sleep(500)
         movePlayer(1500)
         Sleep(800)
         ;~ petAttack()
@@ -133,10 +144,12 @@ Func selectTarget()
         ;~ heal()
         return true    
     else
-        ConsoleWrite("couldn't select a target")
-        MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +15, $adjust_y)
+        ;~ ConsoleWrite("couldn't select a target")
+        sleep(1000)
+        MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +15, $adjust_y, 5)
+        sleep(1000)
         movePlayer(500)
-        Sleep(500)
+        sleep(1000)
         return false
     EndIf
 EndFunc
@@ -175,47 +188,51 @@ Func attack()
     ControlSend($hWnd, "", "", "{1}")
    
     Sleep(2500)
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(2600)
-    moveBackward("left")
-    Sleep(1000)
     ControlSend($hWnd, "", "", "{8}")
-    Sleep(2600)
+   
+    Sleep(2500)
     ControlSend($hWnd, "", "", "{2}")
     Sleep(2600)
-    needsHeal()
+   
     ControlSend($hWnd, "", "", "{3}")
     Sleep(2600)
-    ControlSend($hWnd, "", "", "{7}")
-    Sleep(2600)
-    moveBackward("right")
-    Sleep(1000)
-   
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(2600)
-    needsHeal()
+    moveBackward("left")
+    Sleep(2000)
     ControlSend($hWnd, "", "", "{4}")
     Sleep(2600)
+    
+    ControlSend($hWnd, "", "", "{5}")
+    Sleep(2600)
     ControlSend($hWnd, "", "", "{3}")
-    Sleep(2600)
-    moveBackward("left")
-    Sleep(1000)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{8}")
-    Sleep(2600)
+    ;~ Sleep(2600)
+    ;~ moveBackward("right")
+    ;~ Sleep(2600)
+   
+    ;~ ControlSend($hWnd, "", "", "{4}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{5}")
+    ;~ Sleep(2600)
+    ;~ needsHeal()
+    ;~ ControlSend($hWnd, "", "", "{3}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{4}")
+    ;~ Sleep(2600)
+    ;~ moveBackward("left")
+    ;~ Sleep(1000)
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{3}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{4}")
+    ;~ Sleep(2600)
+    ;~ needsHeal()
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    Sleep(11000)
     needsHeal()
-    ControlSend($hWnd, "", "", "{2}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{3}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{6}")
-    Sleep(6200)
-
 
 EndFunc
 
@@ -230,24 +247,28 @@ Func needsHeal()
     ;~ $inj_tolerance = 5
     ;~ $injured =  FFBestSpot($inj_searchArea, $inj_minAcceptable, $inj_optimal, $inj_x, $inj_y, $inj_color, $inj_tolerance)
     
-    $search_hp = _ImageSearch_Area($image4, $hp_xPos, $hp_yPos, $hp_xPos2, $hp_yPos2,20 )
+    $search_hp = _ImageSearch_Area($image4, $hp_xPos, $hp_yPos, $hp_xPos2, $hp_yPos2,5 )
 
-    if $search_hp[0] = 1 Then
-        ConsoleWrite("<<<<injured>>>>>")
-        ControlSend($hWnd, "", "", "{5}")
+    if $search_hp[0] = 0 Then
+        ;~ ConsoleWrite("<<<<injured>>>>>")
+        ControlSend($hWnd, "", "", "{7}")
         Sleep(2600)
         return true
         
     Else
-        ConsoleWrite("<<<<<not injured>>>>")
+        ;~ ConsoleWrite("<<<<<not injured>>>>")
         ;~ ControlSend($hWnd, "", "", "{5}")
         return false
     EndIf
 EndFunc
 
 While true
+    if $eat_food_counter = 60 Then
+        ControlSend($hWnd, "", "", "{9}")
+        $eat_food_counter = 0
+    EndIf
     While not selectTarget()
         selectTarget()
     WEnd
-    
+    $eat_food_counter +=1
 WEnd  

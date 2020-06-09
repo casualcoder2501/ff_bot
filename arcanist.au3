@@ -15,7 +15,7 @@ HotKeySet("Esc", "_Exit")
 ;~ Global $optimal = 15
 
 global $xPos = 0
-global $yPos = 40
+global $yPos = 0
 global $xPos2 = 950
 global $yPos2 = 560
 
@@ -49,10 +49,14 @@ Func findEnemy()
  
         MouseMove($search[1] +60 ,$search[2]  , 1)
         sleep(1000)
-        MouseClick("left",$search[1] +60,$search[2], 1, 1)
-        Sleep(1000)
-        MouseClick("right",$search[1] +60,$search[2], 1, 1)
-        Sleep(1000)
+        MouseDown("left")
+        Sleep(300)
+        MouseUp("left")
+        sleep(500)
+        MouseDown("right")
+        Sleep(300)
+        MouseUp("right")
+        sleep(1000)
           
                 ;~ MouseClick("right",$search[1] +35,$search[2] )
 
@@ -79,14 +83,16 @@ Func findAggro()
     $search_aggro = _ImageSearch_Area($image3, $xPos, $yPos, $xPos2, $yPos2,110 )
     if $search_aggro[0] = 1 then
  
-        MouseMove($search_aggro[1] +60 ,$search_aggro[2] +1 , 1)
+        MouseMove($search_aggro[1] +60 ,$search_aggro[2] , 1)
         sleep(1000)
-        MouseClick("left",$search_aggro[1] +60,$search_aggro[2] +1, 1, 1)
-        Sleep(700)
-        MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +1, 1, 1)
-        sleep(500)
-        MouseClick("right",$search_aggro[1] +60 ,$search_aggro[2] +1, 1, 1)
-        sleep(500)
+        MouseDown("left")
+        Sleep(200)
+        MouseUp("left")
+        sleep(400)
+        MouseDown("right")
+        Sleep(200)
+        MouseUp("right")
+        sleep(1000)
 
         return true
     ;~ $searchArea = 300
@@ -138,11 +144,11 @@ Func selectTarget()
     else
         ConsoleWrite("couldn't select a target")
         Sleep(1000)
-        MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +15, $adjust_y)
-        Sleep(900)
+        MouseClickDrag("left",$adjust_x, $adjust_y,$adjust_x +10, $adjust_y,8)
+        Sleep(1500)
 
         movePlayer(500)
-        Sleep(900)
+        Sleep(2000)
         return false
     EndIf
 EndFunc
@@ -180,31 +186,33 @@ Func attack()
     ;~ ControlSend($hWnd, "", "", "{8}")
     ControlSend($hWnd, "", "", "{2}")
    
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{3}")
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{4}")
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{5}")
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{6}")
-    Sleep(2600)
+    Sleep(3000)
+    ControlSend($hWnd, "", "", "{8}")
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{5}")
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
+    Sleep(3000)
     ControlSend($hWnd, "", "", "{6}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2600)
-    ControlSend($hWnd, "", "", "{1}")
-    Sleep(2500)
-    ControlSend($hWnd, "", "", "{6}")
-    Sleep(6000)
+    ;~ Sleep(3000)
+    ;~ ControlSend($hWnd, "", "", "{1}")
+    ;~ Sleep(3000)
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{1}")
+    ;~ Sleep(2600)
+    ;~ ControlSend($hWnd, "", "", "{1}")
+    ;~ Sleep(2500)
+    ;~ ControlSend($hWnd, "", "", "{6}")
+    Sleep(12000)
 
    
    
